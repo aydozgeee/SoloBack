@@ -1,8 +1,8 @@
+require('dotenv').config()
 const { Client } = require('pg');
 const { userUpdate} = require('../queries/userQueries');
-const nodemailer = require('nodemailer');
-const configOptions = require('../config/mailConfig');
 const crypto = require('crypto');
+const transporter=require('../config/mailConfig')
 
 async function updateUser(user) {
   const client = new Client(/* veritabanı bağlantı bilgileri */);
@@ -26,9 +26,8 @@ async function updateUser(user) {
 function generateResetToken() {
   return crypto.randomBytes(20).toString('hex');
 }
-const transporter = nodemailer.createTransport(configOptions);
 const sendResetEmail = (email, resetToken) => {
-    console.log("dcsdsdsd",process.env.EMAIL_USER)
+    console.log("sendResetEmail",process.env.EMAIL_USER,email)
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
